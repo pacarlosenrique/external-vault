@@ -13,10 +13,10 @@ k8s:
 	helm install vault hashicorp/vault \
 		--set "injector.externalVaultAddr=http://172.20.1.202:8200"
 
-vault: env
-	docker-compose up -f docker/docker-compose.yml -d vault
+vault:
+	docker-compose -f vault/docker-compose.yaml up -d vault
 	sleep 5
-	docker-compose exec vault sh -c "${VAULT_INIT}"
+	docker-compose -f vault/docker-compose.yaml  exec vault sh -c "${VAULT_INIT}"
 
 app:
 	kubectl apply -f app/app.yaml
