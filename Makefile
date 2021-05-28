@@ -1,6 +1,6 @@
 .PHONY: start k8s vault env app
 
-VAULT_INIT=`cat ./vault-init.sh`
+VAULT_INIT=`cat ./vault/vault-init.sh`
 GATEWAY_IP=$(shell minikube ssh "grep host.minikube.internal /etc/hosts" | awk '{print $$1}')
 
 start:
@@ -9,18 +9,18 @@ start:
 k8s:
 	kubectl create namespace demo
 	kubectl config set-context --current --namespace=demo
-	kubectl apply -f k8s.yaml
+	kubectl apply -f k8s/k8s.yaml
 	helm repo add hashicorp https://helm.releases.hashicorp.com
 	helm install vault hashicorp/vault \
 		--set "injector.externalVaultAddr=http://${GATEWAY_IP}:8200"
 
 vault: env
-	docker-compose up -d vault
+	docker-compose up -f docker/docker-compose.yml -d vault
 	sleep 5
 	docker-compose exec vault sh -c "${VAULT_INIT}"
 
 app:
-	kubectl apply -f app.yaml
+	kubectl apply -f app/app.yaml
 	echo "Once deployed, navigate to http://`minikube ip`:30100?file=credentials.txt"
 
 env:
