@@ -13,15 +13,15 @@ vault write auth/kubernetes/config \
         kubernetes_host="$KUBE_HOST" \
         kubernetes_ca_cert=@cert.pem
 
-vault policy write my-awesome-app - <<EOF
-path "secret/data/my-awesome-app/config" {
-  capabilities = ["read"]
-}
-EOF
-
-vault write auth/kubernetes/role/awesome-app \
-        bound_service_account_names=sa-awesome-app \
-        bound_service_account_namespaces=demo \
-        policies=my-awesome-app \
-        ttl=24h
+#vault policy write my-awesome-app - <<EOF
+#path "secret/data/my-awesome-app/config" {
+#  capabilities = ["read"]
+#}
+#EOF
+#
+#vault write auth/kubernetes/role/awesome-app \
+#        bound_service_account_names=sa-awesome-app \
+#        bound_service_account_namespaces=backend \
+#        policies=my-awesome-app \
+#        ttl=24h
 
