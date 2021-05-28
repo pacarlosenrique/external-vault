@@ -23,6 +23,6 @@ app:
 	echo "Once deployed, navigate to http://`minikube ip`:30100?file=credentials.txt"
 
 env:
-	echo "TOKEN_REVIEW_JWT=`kubectl get secret sa-vault-auth -o go-template='{{ .data.token }}' | base64 --decode)}`" > .env
+	echo "TOKEN_REVIEW_JWT=`kubectl get secret sa-vault-auth -o go-template='{{ .data.token }}' | base64 --decode`" > .env
 	echo "KUBE_CA_CERT_B64=`kubectl config view --raw --minify --flatten -o jsonpath='{.clusters[].cluster.certificate-authority-data}'`" >> .env
-	echo "KUBE_HOST=`$(kubectl config view --raw --minify --flatten --output='jsonpath={.clusters[].cluster.server}')`" >> .env
+	echo "KUBE_HOST=`kubectl config view --raw --minify --flatten --output='jsonpath={.clusters[].cluster.server}'`" >> .env
